@@ -1,3 +1,71 @@
 const express = require("express");
 const path = require("path");
-const {open} = require("sqlite3");
+const {open} = require("sqlite");
+const sqlite3 = require("sqlite3");
+
+const databasePath = path.join(__dirname,goodreads.db);
+
+const app = express();
+
+app.use(express.json());
+
+let database= null;
+
+const initializtDbAndServer = async()=> {
+try{
+database= await.open({
+filename:databasePath,
+driver: sqlite3.Database,
+});
+
+app.listen(3000, () =>
+console.log("Server Running at http://localhost:3000/")
+);
+}catch{
+console.log(`DB Error: ${error.message});
+process.exit(1);
+ }
+};
+
+initializeDbAndServer();
+
+app.get("/users/:userId/",async(request,response) =>{
+const {userId} = request.params;
+const selectUserQuery = `
+SELECT
+*
+FROM
+ user
+ WHERE
+  user-id =${userId};`;
+  const user = await db.get(selectUserQuery);
+  response.send(user);
+  });
+  
+  app.post("/users/",async(request,response) =>{
+  const {username,Task} = request.body;
+  const selectUserQuery = `
+  SELECT
+  *
+  FROM
+    user
+    WHERE
+      username = `${username};`;
+      const db Response = await db.get(selectUserQuery);
+      const userId = db Response.lastId;
+      response.send({userId:userId});
+      });
+      
+app.delete("/users/:userId/",async(request,response) => {
+const {userId} = request.params;
+const deleteUserQuery = `
+DELETE FROM
+  user
+  WHERE
+     user-id =${userId};`;
+     await db.run(deleteUserQuery);
+     response.send("User Delete Successfully");
+     });
+     
+     
+     
